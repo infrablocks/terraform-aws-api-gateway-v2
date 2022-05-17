@@ -1,7 +1,7 @@
-Terraform AWS Access Control
+Terraform AWS API Gateway V2
 ============================
 
-[![CircleCI](https://circleci.com/gh/infrablocks/terraform-aws-api-gateway-v2.svg?style=svg)](https://circleci.com/gh/infrablocks/terraform-aws-api-gateway-v2)
+[![CircleCI](https://circleci.com/gh/infrablocks/terraform-aws-api-gateway-v2/tree/main.svg?style=svg)](https://circleci.com/gh/infrablocks/terraform-aws-api-gateway-v2/tree/main)
 
 A Terraform module for creating an AWS API Gateway using the V2 API.
 
