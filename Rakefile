@@ -50,7 +50,8 @@ namespace :encryption do
     task generate: ['directory:ensure'] do
       File.write(
         'config/secrets/ci/encryption.passphrase',
-        SecureRandom.base64(36))
+        SecureRandom.base64(36)
+      )
     end
   end
 end
@@ -84,7 +85,7 @@ namespace :secrets do
     task :ensure do
       FileUtils.mkdir_p('config/secrets')
       unless File.exist?('config/secrets/.unlocked')
-        File.write('config/secrets/.unlocked', "true")
+        File.write('config/secrets/.unlocked', 'true')
       end
     end
   end
@@ -145,7 +146,6 @@ end
 namespace :pipeline do
   desc 'Prepare CircleCI Pipeline'
   task prepare: %i[
-    circle_ci:project:follow
     circle_ci:env_vars:ensure
     circle_ci:checkout_keys:ensure
     circle_ci:ssh_keys:ensure
