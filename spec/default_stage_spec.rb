@@ -8,36 +8,44 @@ describe 'default stage' do
   end
 
   let(:api_gateway_stages) do
-    api_gateway_v2_client.get_stages(api_id: output_api_gateway_id)
+    api_gateway_v2_client.get_stages(api_id: output_api_gateway_id).items
+  end
+
+  let(:api_gateway_stage) do
+    api_gateway_stages[0]
   end
 
   describe 'by default' do
     it 'creates a single stage' do
-      expect(api_gateway_stages.items.length).to(eq(1))
+      expect(api_gateway_stages.length).to(eq(1))
     end
 
     it 'uses a stage name of $default' do
-      stage = api_gateway_stages.items[0]
-      expect(stage.stage_name).to(eq('$default'))
+      expect(api_gateway_stage.stage_name).to(eq('$default'))
     end
 
     # rubocop:disable RSpec/MultipleExpectations
     it 'uses a stage description including the component and ' \
        'deployment identifier' do
-      require 'pp'
-      stage = api_gateway_stages.items[0]
-      pp stage
-      expect(stage.description)
+      expect(api_gateway_stage.description)
         .to(match(/.*#{vars.component}.*/))
-      expect(stage.description)
+      expect(api_gateway_stage.description)
         .to(match(/.*#{vars.deployment_identifier}.*/))
     end
     # rubocop:enable RSpec/MultipleExpectations
 
     it 'auto-deploys the stage' do
-      stage = api_gateway_stages.items[0]
-      expect(stage.auto_deploy).to(be(true))
+      expect(api_gateway_stage.auto_deploy).to(be(true))
     end
+
+    # rubocop:disable RSpec/MultipleExpectations
+    it 'includes the component and deployment identifier as tags' do
+      expect(api_gateway_stage.tags)
+        .to(include({ 'Component' => vars.component }))
+      expect(api_gateway_stage.tags)
+        .to(include({ 'DeploymentIdentifier' => vars.deployment_identifier }))
+    end
+    # rubocop:enable RSpec/MultipleExpectations
   end
 
   describe 'when include_default_stage is false' do
@@ -48,7 +56,7 @@ describe 'default stage' do
     end
 
     it 'does not create a stage' do
-      expect(api_gateway_stages.items.length).to(eq(0))
+      expect(api_gateway_stages.length).to(eq(0))
     end
   end
 
@@ -60,31 +68,35 @@ describe 'default stage' do
     end
 
     it 'creates a single stage' do
-      expect(api_gateway_stages.items.length).to(eq(1))
+      expect(api_gateway_stages.length).to(eq(1))
     end
 
     it 'uses a stage name of $default' do
-      stage = api_gateway_stages.items[0]
-      expect(stage.stage_name).to(eq('$default'))
+      expect(api_gateway_stage.stage_name).to(eq('$default'))
     end
 
     # rubocop:disable RSpec/MultipleExpectations
     it 'uses a stage description including the component and ' \
        'deployment identifier' do
-      require 'pp'
-      stage = api_gateway_stages.items[0]
-      pp stage
-      expect(stage.description)
+      expect(api_gateway_stage.description)
         .to(match(/.*#{vars.component}.*/))
-      expect(stage.description)
+      expect(api_gateway_stage.description)
         .to(match(/.*#{vars.deployment_identifier}.*/))
     end
     # rubocop:enable RSpec/MultipleExpectations
 
     it 'auto-deploys the stage' do
-      stage = api_gateway_stages.items[0]
-      expect(stage.auto_deploy).to(be(true))
+      expect(api_gateway_stage.auto_deploy).to(be(true))
     end
+
+    # rubocop:disable RSpec/MultipleExpectations
+    it 'includes the component and deployment identifier as tags' do
+      expect(api_gateway_stage.tags)
+        .to(include({ 'Component' => vars.component }))
+      expect(api_gateway_stage.tags)
+        .to(include({ 'DeploymentIdentifier' => vars.deployment_identifier }))
+    end
+    # rubocop:enable RSpec/MultipleExpectations
   end
 
   describe 'when enable_auto_deploy_for_default_stage is false' do
@@ -95,8 +107,7 @@ describe 'default stage' do
     end
 
     it 'sets auto deploy to false on the stage' do
-      stage = api_gateway_stages.items[0]
-      expect(stage.auto_deploy).to(be(false))
+      expect(api_gateway_stage.auto_deploy).to(be(false))
     end
   end
 
@@ -108,8 +119,7 @@ describe 'default stage' do
     end
 
     it 'sets auto deploy to true on the stage' do
-      stage = api_gateway_stages.items[0]
-      expect(stage.auto_deploy).to(be(true))
+      expect(api_gateway_stage.auto_deploy).to(be(true))
     end
   end
 end
