@@ -32,8 +32,17 @@ shared_context 'terraform' do
     TerraformModule.output_for(role, name)
   end
 
-  def reprovision(overrides = nil, &)
+  def provision(overrides = nil, &)
     TerraformModule.provision_for(:harness, overrides, &)
+  end
+
+  def destroy(overrides = nil, &)
+    TerraformModule.destroy_for(:harness, overrides, force: true, &)
+  end
+
+  def reprovision(overrides = nil, &)
+    destroy(overrides, &)
+    provision(overrides, &)
   end
 end
 # rubocop:enable RSpec/ContextWording

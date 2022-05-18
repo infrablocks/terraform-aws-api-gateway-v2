@@ -15,6 +15,14 @@ describe 'default stage' do
     api_gateway_stages[0]
   end
 
+  before(:context) do
+    provision { |vars| vars.merge(include_default_stage_domain_name: false) }
+  end
+
+  after(:context) do
+    destroy { |vars| vars.merge(include_default_stage_domain_name: false) }
+  end
+
   describe 'by default' do
     it 'creates a single stage' do
       expect(api_gateway_stages.length).to(eq(1))
@@ -49,9 +57,11 @@ describe 'default stage' do
   end
 
   describe 'when include_default_stage is false' do
-    before do
-      reprovision do |vars|
-        vars.merge(include_default_stage: false)
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage: false
+        )
       end
     end
 
@@ -61,9 +71,12 @@ describe 'default stage' do
   end
 
   describe 'when include_default_stage is true' do
-    before do
-      reprovision do |vars|
-        vars.merge(include_default_stage: true)
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage: true,
+          include_default_stage_domain_name: false,
+        )
       end
     end
 
@@ -99,10 +112,13 @@ describe 'default stage' do
     # rubocop:enable RSpec/MultipleExpectations
   end
 
-  describe 'when enable_auto_deploy_for_default_stage is false' do
-    before do
-      reprovision do |vars|
-        vars.merge(enable_auto_deploy_for_default_stage: false)
+  describe 'when enable_default_stage_auto_deploy is false' do
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          enable_default_stage_auto_deploy: false,
+          include_default_stage_domain_name: false
+        )
       end
     end
 
@@ -111,10 +127,13 @@ describe 'default stage' do
     end
   end
 
-  describe 'when enable_auto_deploy_for_default_stage is true' do
-    before do
-      reprovision do |vars|
-        vars.merge(enable_auto_deploy_for_default_stage: true)
+  describe 'when enable_default_stage_auto_deploy is true' do
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          enable_default_stage_auto_deploy: true,
+          include_default_stage_domain_name: false,
+        )
       end
     end
 

@@ -30,11 +30,8 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     TerraformModule.provision_for(:prerequisites)
-    TerraformModule.provision_for(:harness)
   end
   config.after(:suite) do
-    TerraformModule.destroy_for(:harness)
-  ensure
     TerraformModule.destroy_for(:prerequisites)
   end
 end

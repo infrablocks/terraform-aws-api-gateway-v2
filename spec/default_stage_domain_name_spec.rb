@@ -1,0 +1,138 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+describe 'default stage domain name' do
+  let(:output_api_gateway_id) do
+    output_for(:harness, 'api_gateway_id')
+  end
+
+  let(:output_api_gateway_default_stage_api_mapping_id) do
+    output_for(:harness, 'api_gateway_default_stage_api_mapping_id')
+  end
+
+  let(:default_stage_domain_name_certificate_arn) do
+    output_for(:prerequisites, 'certificate_arn')
+  end
+
+  let(:default_stage_domain_name) do
+    configuration.domain_name
+  end
+
+  let(:api_gateway_default_stage_domain_name) do
+    api_gateway_v2_client
+      .get_domain_name(domain_name: default_stage_domain_name)
+  rescue Aws::ApiGatewayV2::Errors::NotFound
+    nil
+  end
+
+  let(:api_gateway_default_stage_api_mapping) do
+    api_gateway_v2_client
+      .get_api_mapping(
+        domain_name: default_stage_domain_name,
+        api_mapping_id: output_api_gateway_default_stage_api_mapping_id)
+  rescue Aws::ApiGatewayV2::Errors::NotFound
+    nil
+  end
+
+  describe 'by default' do
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          default_stage_domain_name: configuration.domain_name,
+          default_stage_domain_name_certificate_arn:
+            output_for(:prerequisites, 'certificate_arn')
+        )
+      end
+    end
+
+    it 'creates a domain name' do
+      require 'pp'
+      pp api_gateway_default_stage_domain_name
+      expect(api_gateway_default_stage_domain_name).not_to(be_nil)
+    end
+
+    it 'maps the domain name to the default stage' do
+      pp api_gateway_default_stage_api_mapping
+      expect(api_gateway_default_stage_api_mapping).not_to(be_nil)
+    end
+
+    it 'uses the provided certificate ARN' do
+      expect(api_gateway_default_stage_domain_name
+               .domain_name_configurations[0]
+               .certificate_arn)
+        .to(eq(default_stage_domain_name_certificate_arn))
+    end
+
+    it 'uses an endpoint type of REGIONAL' do
+      expect(api_gateway_default_stage_domain_name
+               .domain_name_configurations[0]
+               .endpoint_type)
+        .to(eq('REGIONAL'))
+    end
+
+    it 'uses a security policy of TLS_1_2' do
+      expect(api_gateway_default_stage_domain_name
+               .domain_name_configurations[0]
+               .security_policy)
+        .to(eq('TLS_1_2'))
+    end
+  end
+
+  describe 'when include_default_stage_domain_name is false' do
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage_domain_name: false
+        )
+      end
+    end
+
+    it 'does not create a domain name for the default stage' do
+      expect(api_gateway_default_stage_domain_name).to(be_nil)
+    end
+  end
+
+  describe 'when include_default_stage_domain_name is true' do
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage_domain_name: true,
+          default_stage_domain_name: configuration.domain_name,
+          default_stage_domain_name_certificate_arn:
+            output_for(:prerequisites, 'certificate_arn')
+        )
+      end
+    end
+
+    it 'creates a domain name' do
+      expect(api_gateway_default_stage_domain_name).not_to(be_nil)
+    end
+
+    it 'maps the domain name to the default stage' do
+      pp api_gateway_default_stage_api_mapping
+      expect(api_gateway_default_stage_api_mapping).not_to(be_nil)
+    end
+
+    it 'uses the provided certificate ARN' do
+      expect(api_gateway_default_stage_domain_name
+               .domain_name_configurations[0]
+               .certificate_arn)
+        .to(eq(default_stage_domain_name_certificate_arn))
+    end
+
+    it 'uses an endpoint type of REGIONAL' do
+      expect(api_gateway_default_stage_domain_name
+               .domain_name_configurations[0]
+               .endpoint_type)
+        .to(eq('REGIONAL'))
+    end
+
+    it 'uses a security policy of TLS_1_2' do
+      expect(api_gateway_default_stage_domain_name
+               .domain_name_configurations[0]
+               .security_policy)
+        .to(eq('TLS_1_2'))
+    end
+  end
+end

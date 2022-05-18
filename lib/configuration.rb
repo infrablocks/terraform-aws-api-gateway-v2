@@ -86,6 +86,16 @@ class Configuration
       .for_overrides(overrides.to_h.merge(default_overrides(overrides)))
   end
 
+  def method_missing(symbol, *_)
+    @delegate
+      .for_scope(project_directory:)
+      .send(symbol)
+  end
+
+  def respond_to_missing?
+    true
+  end
+
   private
 
   def default_scope(role)

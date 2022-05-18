@@ -20,6 +20,14 @@ describe 'API gateway' do
     nil
   end
 
+  before(:context) do
+    provision { |vars| vars.merge(include_default_stage_domain_name: false) }
+  end
+
+  after(:context) do
+    destroy { |vars| vars.merge(include_default_stage_domain_name: false) }
+  end
+
   it 'creates an API gateway' do
     expect(api_gateway).not_to(be_nil)
   end
@@ -68,9 +76,12 @@ describe 'API gateway' do
   end
 
   describe 'when protocol type is WEBSOCKET' do
-    before do
-      reprovision do |vars|
-        vars.merge(protocol_type: 'WEBSOCKET')
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage_domain_name: false,
+          protocol_type: 'WEBSOCKET'
+        )
       end
     end
 
@@ -80,9 +91,12 @@ describe 'API gateway' do
   end
 
   describe 'when protocol type is HTTP' do
-    before do
-      reprovision do |vars|
-        vars.merge(protocol_type: 'HTTP')
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage_domain_name: false,
+          protocol_type: 'HTTP'
+        )
       end
     end
 
@@ -92,9 +106,12 @@ describe 'API gateway' do
   end
 
   describe 'when enable_execute_api_endpoint is false' do
-    before do
-      reprovision do |vars|
-        vars.merge(enable_execute_api_endpoint: false)
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage_domain_name: false,
+          enable_execute_api_endpoint: false
+        )
       end
     end
 
@@ -104,9 +121,12 @@ describe 'API gateway' do
   end
 
   describe 'when enable_execute_api_endpoint is true' do
-    before do
-      reprovision do |vars|
-        vars.merge(enable_execute_api_endpoint: true)
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage_domain_name: false,
+          enable_execute_api_endpoint: true
+        )
       end
     end
 

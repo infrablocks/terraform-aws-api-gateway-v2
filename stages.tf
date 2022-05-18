@@ -3,7 +3,7 @@ resource "aws_apigatewayv2_stage" "default" {
   api_id      = aws_apigatewayv2_api.api_gateway.id
   name        = "$default"
   description = "Default route for component: ${var.component} and deployment identifier: ${var.deployment_identifier}."
-  auto_deploy = local.enable_auto_deploy_for_default_stage
+  auto_deploy = local.enable_default_stage_auto_deploy
 
   tags = {
     Component : var.component

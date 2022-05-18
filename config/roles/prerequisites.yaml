@@ -5,3 +5,7 @@ vars:
   region: "%{hiera('region')}"
 
   deployment_identifier: "%{hiera('deployment_identifier')}"
+
+  domain_name: "%{hiera('domain_name')}"
+
+  public_zone_id: "%{hiera('public_zone_id')}"
