@@ -15,5 +15,7 @@ module "api_gateway" {
 
   protocol_type = var.protocol_type
 
+  include_default_stage = var.include_default_stage
   enable_execute_api_endpoint = var.enable_execute_api_endpoint
+  enable_auto_deploy_for_default_stage = var.enable_auto_deploy_for_default_stage
 }
