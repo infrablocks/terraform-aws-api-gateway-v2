@@ -26,5 +26,8 @@ RSpec/ExampleLength:
 RSpec/DescribeClass:
   Enabled: false
 
+RSpec/BeforeAfterAll:
+  Enabled: false
+
 RSpec/MultipleMemoizedHelpers:
   Max: 10

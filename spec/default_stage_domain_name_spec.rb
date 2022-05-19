@@ -30,7 +30,8 @@ describe 'default stage domain name' do
     api_gateway_v2_client
       .get_api_mapping(
         domain_name: default_stage_domain_name,
-        api_mapping_id: output_api_gateway_default_stage_api_mapping_id)
+        api_mapping_id: output_api_gateway_default_stage_api_mapping_id
+      )
   rescue Aws::ApiGatewayV2::Errors::NotFound
     nil
   end

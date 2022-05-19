@@ -75,7 +75,7 @@ describe 'default stage' do
       provision do |vars|
         vars.merge(
           include_default_stage: true,
-          include_default_stage_domain_name: false,
+          include_default_stage_domain_name: false
         )
       end
     end
@@ -132,7 +132,7 @@ describe 'default stage' do
       provision do |vars|
         vars.merge(
           enable_default_stage_auto_deploy: true,
-          include_default_stage_domain_name: false,
+          include_default_stage_domain_name: false
         )
       end
     end
