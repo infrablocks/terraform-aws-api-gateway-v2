@@ -5,8 +5,5 @@ resource "aws_apigatewayv2_api" "api_gateway" {
 
   disable_execute_api_endpoint = !local.enable_execute_api_endpoint
 
-  tags = {
-    Component : var.component
-    DeploymentIdentifier : var.deployment_identifier
-  }
+  tags = local.tags
 }

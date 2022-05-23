@@ -11,13 +11,13 @@ output "api_gateway_name" {
 }
 
 output "api_gateway_default_stage_id" {
-  value = try(aws_apigatewayv2_stage.default[0].id, null)
+  value = try(module.default_stage[0].stage_id, null)
 }
 
 output "api_gateway_default_stage_arn" {
-  value = try(aws_apigatewayv2_stage.default[0].arn, null)
+  value = try(module.default_stage[0].stage_arn, null)
 }
 
 output "api_gateway_default_stage_api_mapping_id" {
-  value = try(aws_apigatewayv2_api_mapping.default[0].id, null)
+  value = try(module.default_stage[0].stage_api_mapping_id, null)
 }

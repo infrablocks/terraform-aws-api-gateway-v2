@@ -14,16 +14,27 @@ variable "protocol_type" {
 }
 
 variable "default_stage_domain_name" {
-  type = string
+  type        = string
   description = "The domain name to map to the API gateway's default stage. Required when both the default stage and default stage domain name are included."
-  default = ""
+  default     = ""
 }
 variable "default_stage_domain_name_certificate_arn" {
-  type = string
+  type        = string
   description = "The ARN of an AWS managed certificate to use for the default stage domain name. Required when both the default stage and default stage domain name are included."
-  default = ""
+  default     = ""
 }
 
+variable "tags" {
+  type        = map(string)
+  description = "Additional tags to set on created resources."
+  default     = {}
+}
+
+variable "include_default_tags" {
+  type        = bool
+  description = "Whether or not to include default tags on created resources. Defaults to `true`."
+  default     = true
+}
 variable "include_default_stage" {
   type        = bool
   description = "Whether or not to create a default stage for the API gateway. Defaults to `true`."
@@ -40,7 +51,7 @@ variable "enable_execute_api_endpoint" {
   default     = true
 }
 variable "enable_default_stage_auto_deploy" {
-  type    = bool
+  type        = bool
   description = "Whether or not to enable auto-deploy for the created default stage. Only relevant when the default stage is included. Defaults to `true`."
-  default = true
+  default     = true
 }

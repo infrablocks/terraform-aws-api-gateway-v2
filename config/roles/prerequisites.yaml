@@ -4,6 +4,7 @@ state_file: "%{hiera('project_directory')}/state/prerequisites.tfstate"
 vars:
   region: "%{hiera('region')}"
 
+  component: "%{hiera('component')}"
   deployment_identifier: "%{hiera('deployment_identifier')}"
 
   domain_name: "%{hiera('domain_name')}"

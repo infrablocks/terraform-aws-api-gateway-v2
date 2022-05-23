@@ -3,7 +3,6 @@
 require 'spec_helper'
 
 describe 'API gateway' do
-  # let(:requested_users) { vars.users }
   let(:output_api_gateway_id) do
     output_for(:harness, 'api_gateway_id')
   end
@@ -47,14 +46,14 @@ describe 'API gateway' do
     expect(api_gateway.name).to(eq(output_api_gateway_name))
   end
 
-  # rubocop:disable RSpec/MultipleExpectations
   it 'includes the component and deployment identifier as tags' do
     expect(api_gateway.tags)
-      .to(include({ 'Component' => vars.component }))
-    expect(api_gateway.tags)
-      .to(include({ 'DeploymentIdentifier' => vars.deployment_identifier }))
+      .to(include(
+            {
+              'Component' => vars.component,
+              'DeploymentIdentifier' => vars.deployment_identifier
+            }))
   end
-  # rubocop:enable RSpec/MultipleExpectations
 
   describe 'by default' do
     it 'uses a protocol type of HTTP' do
@@ -132,6 +131,125 @@ describe 'API gateway' do
 
     it 'disables the execute API' do
       expect(api_gateway.disable_execute_api_endpoint).to(be(false))
+    end
+  end
+
+  describe 'when tags are provided and include_default_tags is not provided' do
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage_domain_name: false,
+          tags: { Alpha: 'beta', Gamma: 'delta' }
+        )
+      end
+    end
+
+    it 'includes the provided tags alongside the defaults' do
+      expect(api_gateway.tags)
+        .to(include(
+              {
+                'Component' => vars.component,
+                'DeploymentIdentifier' => vars.deployment_identifier,
+                'Alpha' => 'beta',
+                'Gamma' => 'delta'
+              }))
+    end
+  end
+
+  describe 'when tags are provided and include_default_tags is false' do
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage_domain_name: false,
+          include_default_tags: false,
+          tags: { Alpha: 'beta', Gamma: 'delta' }
+        )
+      end
+    end
+
+    # rubocop:disable RSpec/MultipleExpectations
+    it 'includes only the provided tags' do
+      expect(api_gateway.tags)
+        .to(include(
+              {
+                'Alpha' => 'beta',
+                'Gamma' => 'delta'
+              }
+            ))
+      expect(api_gateway.tags)
+        .not_to(include(
+                  {
+                    'Component' => vars.component,
+                    'DeploymentIdentifier' => vars.deployment_identifier
+                  }
+                ))
+    end
+    # rubocop:enable RSpec/MultipleExpectations
+  end
+
+  describe 'when tags are provided and include_default_tags is true' do
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage_domain_name: false,
+          include_default_tags: true,
+          tags: { Alpha: 'beta', Gamma: 'delta' }
+        )
+      end
+    end
+
+    it 'includes the provided tags alongside the defaults' do
+      expect(api_gateway.tags)
+        .to(include(
+              {
+                'Component' => vars.component,
+                'DeploymentIdentifier' => vars.deployment_identifier,
+                'Alpha' => 'beta',
+                'Gamma' => 'delta'
+              }
+            ))
+    end
+  end
+
+  describe 'when include_default_tags is false' do
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage_domain_name: false,
+          include_default_tags: false
+        )
+      end
+    end
+
+    it 'does not include default tags' do
+      expect(api_gateway.tags)
+        .not_to(include(
+                  {
+                    'Component' => vars.component,
+                    'DeploymentIdentifier' => vars.deployment_identifier
+                  }
+                ))
+    end
+  end
+
+  describe 'when include_default_tags is true' do
+    before(:context) do
+      provision do |vars|
+        vars.merge(
+          include_default_stage_domain_name: false,
+          include_default_tags: true
+        )
+      end
+    end
+
+    it 'includes default tags' do
+      expect(api_gateway.tags)
+        .to(include(
+              {
+                'Component' => vars.component,
+                'DeploymentIdentifier' => vars.deployment_identifier
+              }
+            ))
     end
   end
 end

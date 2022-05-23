@@ -14,6 +14,15 @@ variable "default_stage_domain_name_certificate_arn" {
   default = null
 }
 
+variable "tags" {
+  type    = map(string)
+  default = null
+}
+
+variable "include_default_tags" {
+  type    = bool
+  default = null
+}
 variable "include_default_stage" {
   type    = bool
   default = null
