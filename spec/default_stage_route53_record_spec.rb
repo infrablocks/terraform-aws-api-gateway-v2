@@ -178,7 +178,7 @@ describe 'default stage route53 record' do
       provision do |vars|
         vars.merge(
           include_default_stage_domain_name: true,
-          include_default_stage_dns_record: false,
+          include_default_stage_dns_record: true,
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
             output_for(:prerequisites, 'certificate_arn')

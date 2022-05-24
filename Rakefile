@@ -197,13 +197,20 @@ namespace :deployment do
       configuration_name: 'harness',
       argument_names: [:deployment_identifier]
     ) do |t, args|
-      deployment_configuration = configuration.for(:harness, args)
+      deployment_configuration =
+        configuration
+        .for(:harness, args.to_h)
+
+      state_file = deployment_configuration.state_file
+      vars = deployment_configuration
+             .vars.to_h
+             .merge(include_default_stage_domain_name: 'false')
 
       t.source_directory = deployment_configuration.source_directory
       t.work_directory = deployment_configuration.work_directory
 
-      t.state_file = deployment_configuration.state_file
-      t.vars = deployment_configuration.vars
+      t.state_file = state_file
+      t.vars = vars
     end
   end
 end

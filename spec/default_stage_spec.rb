@@ -162,7 +162,8 @@ describe 'default stage' do
                 'DeploymentIdentifier' => vars.deployment_identifier,
                 'Alpha' => 'beta',
                 'Gamma' => 'delta'
-              }))
+              }
+            ))
     end
   end
 

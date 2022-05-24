@@ -52,7 +52,8 @@ describe 'API gateway' do
             {
               'Component' => vars.component,
               'DeploymentIdentifier' => vars.deployment_identifier
-            }))
+            }
+          ))
   end
 
   describe 'by default' do
@@ -152,7 +153,8 @@ describe 'API gateway' do
                 'DeploymentIdentifier' => vars.deployment_identifier,
                 'Alpha' => 'beta',
                 'Gamma' => 'delta'
-              }))
+              }
+            ))
     end
   end
 

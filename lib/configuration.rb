@@ -89,6 +89,7 @@ class Configuration
   def method_missing(symbol, *_)
     @delegate
       .for_scope(project_directory:)
+      .for_overrides(default_overrides({}))
       .send(symbol)
   end
 
