@@ -8,7 +8,10 @@ A Terraform module for creating an AWS API Gateway using the V2 API.
 The access control deployment has no requirements.
  
 The AWS API Gateway deployment consists of:
-* TODO
+* An API gateway
+* An optional default stage
+* An optional default stage domain name
+* An optional default stage DNS record
 
 Usage
 -----
@@ -19,7 +22,7 @@ configuration:
 ```hcl-terraform
 module "api_gateway" {
   source = "infrablocks/api-gateway-v2/aws"
-  version = "0.0.1"
+  version = "1.0.0"
 }
 ```
 
