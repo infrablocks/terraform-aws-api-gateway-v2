@@ -1,5 +1,5 @@
 resource "aws_route53_record" "record" {
-  provider = "aws.dns"
+  provider = aws.dns
 
   count = var.include_domain_name == true && var.include_dns_record == true ? 1 : 0
 
