@@ -28,4 +28,9 @@ module "api_gateway" {
   include_default_stage_dns_record  = var.include_default_stage_dns_record
   enable_default_stage_auto_deploy  = var.enable_default_stage_auto_deploy
   enable_execute_api_endpoint       = var.enable_execute_api_endpoint
+
+  providers = {
+    aws = aws
+    aws.dns = aws
+  }
 }

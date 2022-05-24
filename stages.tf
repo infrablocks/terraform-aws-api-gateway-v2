@@ -20,4 +20,9 @@ module "default_stage" {
   include_domain_name  = local.include_default_stage_domain_name
   include_dns_record   = local.include_default_stage_dns_record
   enable_auto_deploy   = local.enable_default_stage_auto_deploy
+
+  providers = {
+    aws = aws
+    aws.dns = aws.dns
+  }
 }
