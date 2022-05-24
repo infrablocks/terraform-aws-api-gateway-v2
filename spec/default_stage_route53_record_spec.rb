@@ -16,15 +16,15 @@ describe 'default stage route53 record' do
   let(:output_domain_name_configuration) do
     output_for(
       :harness,
-      'api_gateway_default_stage_domain_name_configuration'
+      'default_stage_domain_name_configuration'
     )
   end
 
-  let(:api_gateway_default_stage_hosted_zone_id) do
+  let(:default_stage_hosted_zone_id) do
     output_domain_name_configuration[:hosted_zone_id]
   end
 
-  let(:api_gateway_default_stage_target_domain_name) do
+  let(:default_stage_target_domain_name) do
     output_domain_name_configuration[:target_domain_name]
   end
 
@@ -53,8 +53,8 @@ describe 'default stage route53 record' do
       expect(hosted_zone)
         .to(have_record_set("#{default_stage_domain_name}.")
               .alias(
-                "#{api_gateway_default_stage_target_domain_name}.",
-                api_gateway_default_stage_hosted_zone_id
+                "#{default_stage_target_domain_name}.",
+                default_stage_hosted_zone_id
               ))
     end
   end
@@ -97,8 +97,8 @@ describe 'default stage route53 record' do
       expect(hosted_zone)
         .to(have_record_set("#{default_stage_domain_name}.")
               .alias(
-                "#{api_gateway_default_stage_target_domain_name}.",
-                api_gateway_default_stage_hosted_zone_id
+                "#{default_stage_target_domain_name}.",
+                default_stage_hosted_zone_id
               ))
     end
   end
@@ -190,8 +190,8 @@ describe 'default stage route53 record' do
       expect(hosted_zone)
         .to(have_record_set("#{default_stage_domain_name}.")
               .alias(
-                "#{api_gateway_default_stage_target_domain_name}.",
-                api_gateway_default_stage_hosted_zone_id
+                "#{default_stage_target_domain_name}.",
+                default_stage_hosted_zone_id
               ))
     end
   end
@@ -237,8 +237,8 @@ describe 'default stage route53 record' do
       expect(hosted_zone)
         .to(have_record_set("#{default_stage_domain_name}.")
               .alias(
-                "#{api_gateway_default_stage_target_domain_name}.",
-                api_gateway_default_stage_hosted_zone_id
+                "#{default_stage_target_domain_name}.",
+                default_stage_hosted_zone_id
               ))
     end
   end

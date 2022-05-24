@@ -7,7 +7,7 @@ describe 'default stage domain name' do
     output_for(:harness, 'api_gateway_id')
   end
 
-  let(:output_api_gateway_default_stage_api_mapping_id) do
+  let(:output_default_stage_api_mapping_id) do
     output_for(:harness, 'api_gateway_default_stage_api_mapping_id')
   end
 
@@ -30,7 +30,7 @@ describe 'default stage domain name' do
     api_gateway_v2_client
       .get_api_mapping(
         domain_name: default_stage_domain_name,
-        api_mapping_id: output_api_gateway_default_stage_api_mapping_id
+        api_mapping_id: output_default_stage_api_mapping_id
       )
   rescue Aws::ApiGatewayV2::Errors::NotFound
     nil
@@ -41,7 +41,7 @@ describe 'default stage domain name' do
       vars.merge(
         default_stage_domain_name: configuration.domain_name,
         default_stage_domain_name_certificate_arn:
-        output_for(:prerequisites, 'certificate_arn')
+          output_for(:prerequisites, 'certificate_arn')
       )
     end
   end
