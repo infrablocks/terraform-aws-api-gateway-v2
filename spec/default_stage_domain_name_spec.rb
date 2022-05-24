@@ -8,7 +8,7 @@ describe 'default stage domain name' do
   end
 
   let(:output_default_stage_api_mapping_id) do
-    output_for(:harness, 'api_gateway_default_stage_api_mapping_id')
+    output_for(:harness, 'default_stage_api_mapping_id')
   end
 
   let(:default_stage_domain_name_certificate_arn) do
