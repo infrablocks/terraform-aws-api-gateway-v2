@@ -7,6 +7,8 @@ variable "protocol_type" {
   default = null
 }
 
+variable "hosted_zone_id" {}
+
 variable "default_stage_domain_name" {
   default = null
 }
@@ -28,6 +30,10 @@ variable "include_default_stage" {
   default = null
 }
 variable "include_default_stage_domain_name" {
+  type    = bool
+  default = null
+}
+variable "include_default_stage_dns_record" {
   type    = bool
   default = null
 }

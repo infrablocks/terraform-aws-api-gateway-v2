@@ -1,11 +1,23 @@
 output "stage_id" {
-  value = try(aws_apigatewayv2_stage.stage.id, null)
+  value = aws_apigatewayv2_stage.stage.id
 }
 
 output "stage_arn" {
-  value = try(aws_apigatewayv2_stage.stage.arn, null)
+  value = aws_apigatewayv2_stage.stage.arn
 }
 
-output "stage_api_mapping_id" {
-  value = try(aws_apigatewayv2_api_mapping.api_mapping[0].id, null)
+output "api_mapping_id" {
+  value = try(aws_apigatewayv2_api_mapping.api_mapping[0].id, "")
+}
+
+output "domain_name_id" {
+  value = try(aws_apigatewayv2_domain_name.domain_name[0].id, "")
+}
+
+output "domain_name_arn" {
+  value = try(aws_apigatewayv2_domain_name.domain_name[0].arn, "")
+}
+
+output "domain_name_configuration" {
+  value = try(aws_apigatewayv2_domain_name.domain_name[0].domain_name_configuration[0], {})
 }

@@ -16,6 +16,12 @@ variable "name" {
   description = "The name of the stage to create."
 }
 
+variable "hosted_zone_id" {
+  type        = string
+  description = "The ID of the Route 53 hosted zone in which to create DNS records."
+  default     = ""
+}
+
 variable "domain_name" {
   type        = string
   description = "The domain name to map to the stage. Required when a domain name is included."
@@ -43,7 +49,11 @@ variable "include_domain_name" {
   description = "Whether or not to create a domain name for the stage. Defaults to `true`."
   default     = true
 }
-
+variable "include_dns_record" {
+  type        = bool
+  description = "Whether or not to create a DNS record in Route 53 for the domain name of the stage. Defaults to `true`."
+  default     = true
+}
 variable "enable_auto_deploy" {
   type        = bool
   description = "Whether or not to enable auto-deploy for the created stage. Defaults to `true`."

@@ -9,10 +9,7 @@ resource "aws_apigatewayv2_domain_name" "domain_name" {
     security_policy = "TLS_1_2"
   }
 
-  tags = {
-    Component            = var.component
-    DeploymentIdentifier = var.deployment_identifier
-  }
+  tags = local.tags
 }
 
 resource "aws_apigatewayv2_api_mapping" "api_mapping" {

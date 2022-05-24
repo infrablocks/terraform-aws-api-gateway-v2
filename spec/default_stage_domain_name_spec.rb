@@ -37,11 +37,23 @@ describe 'default stage domain name' do
   end
 
   before(:context) do
-    provision
+    provision do |vars|
+      vars.merge(
+        default_stage_domain_name: configuration.domain_name,
+        default_stage_domain_name_certificate_arn:
+        output_for(:prerequisites, 'certificate_arn')
+      )
+    end
   end
 
   after(:context) do
-    destroy
+    destroy do |vars|
+      vars.merge(
+        default_stage_domain_name: configuration.domain_name,
+        default_stage_domain_name_certificate_arn:
+          output_for(:prerequisites, 'certificate_arn')
+      )
+    end
   end
 
   describe 'by default' do
@@ -56,7 +68,6 @@ describe 'default stage domain name' do
     end
 
     it 'creates a domain name' do
-      require 'pp'
       expect(api_gateway_default_stage_domain_name).not_to(be_nil)
     end
 
@@ -166,6 +177,9 @@ describe 'default stage domain name' do
     before(:context) do
       provision do |vars|
         vars.merge(
+          default_stage_domain_name: configuration.domain_name,
+          default_stage_domain_name_certificate_arn:
+            output_for(:prerequisites, 'certificate_arn'),
           tags: { Alpha: 'beta', Gamma: 'delta' }
         )
       end
@@ -187,6 +201,9 @@ describe 'default stage domain name' do
     before(:context) do
       provision do |vars|
         vars.merge(
+          default_stage_domain_name: configuration.domain_name,
+          default_stage_domain_name_certificate_arn:
+            output_for(:prerequisites, 'certificate_arn'),
           include_default_tags: false,
           tags: { Alpha: 'beta', Gamma: 'delta' }
         )
@@ -217,6 +234,9 @@ describe 'default stage domain name' do
     before(:context) do
       provision do |vars|
         vars.merge(
+          default_stage_domain_name: configuration.domain_name,
+          default_stage_domain_name_certificate_arn:
+            output_for(:prerequisites, 'certificate_arn'),
           include_default_tags: true,
           tags: { Alpha: 'beta', Gamma: 'delta' }
         )
@@ -240,6 +260,9 @@ describe 'default stage domain name' do
     before(:context) do
       provision do |vars|
         vars.merge(
+          default_stage_domain_name: configuration.domain_name,
+          default_stage_domain_name_certificate_arn:
+            output_for(:prerequisites, 'certificate_arn'),
           include_default_tags: false
         )
       end
@@ -260,6 +283,9 @@ describe 'default stage domain name' do
     before(:context) do
       provision do |vars|
         vars.merge(
+          default_stage_domain_name: configuration.domain_name,
+          default_stage_domain_name_certificate_arn:
+            output_for(:prerequisites, 'certificate_arn'),
           include_default_tags: true
         )
       end
