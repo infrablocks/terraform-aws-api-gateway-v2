@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe 'stage' do
+describe 'stage' do
   let(:component) { vars(:stage).component }
   let(:deployment_identifier) { vars(:stage).deployment_identifier }
 
