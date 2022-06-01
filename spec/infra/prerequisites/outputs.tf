@@ -7,3 +7,6 @@ output "vpc_id" {
 output "private_subnet_ids" {
   value = module.base_networking.private_subnet_ids
 }
+output "api_id" {
+  value = aws_apigatewayv2_api.api_gateway.id
+}

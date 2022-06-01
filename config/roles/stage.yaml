@@ -1,0 +1,10 @@
+---
+source_directory: "spec/infra/stage"
+state_file: "%{hiera('project_directory')}/state/stage.tfstate"
+vars:
+  region: "%{hiera('region')}"
+
+  component: "%{hiera('component')}"
+  deployment_identifier: "%{hiera('deployment_identifier')}"
+
+  name: "test"

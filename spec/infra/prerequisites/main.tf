@@ -32,3 +32,9 @@ module "base_networking" {
   include_nat_gateways = "no"
   include_route53_zone_association = "no"
 }
+
+resource "aws_apigatewayv2_api" "api_gateway" {
+  name          = "provided-api-gateway-${var.component}-${var.deployment_identifier}"
+  description   = "Provided API gateway for component: \"${var.component}\" and deployment identifier: \"${var.deployment_identifier}\"."
+  protocol_type = "HTTP"
+}
