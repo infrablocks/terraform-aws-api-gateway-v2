@@ -3,14 +3,17 @@
 require 'spec_helper'
 
 describe 'API gateway' do
+  let(:component) { vars(:root).component }
+  let(:deployment_identifier) { vars(:root).deployment_identifier }
+
   let(:output_api_gateway_id) do
-    output_for(:harness, 'api_gateway_id')
+    output(:root, 'api_gateway_id')
   end
   let(:output_api_gateway_arn) do
-    output_for(:harness, 'api_gateway_arn')
+    output(:root, 'api_gateway_arn')
   end
   let(:output_api_gateway_name) do
-    output_for(:harness, 'api_gateway_name')
+    output(:root, 'api_gateway_name')
   end
 
   let(:api_gateway) do
@@ -20,11 +23,15 @@ describe 'API gateway' do
   end
 
   before(:context) do
-    provision { |vars| vars.merge(include_default_stage_domain_name: false) }
+    provision(:root) do |vars|
+      vars.merge(include_default_stage_domain_name: false)
+    end
   end
 
   after(:context) do
-    destroy { |vars| vars.merge(include_default_stage_domain_name: false) }
+    destroy(:root) do |vars|
+      vars.merge(include_default_stage_domain_name: false)
+    end
   end
 
   it 'creates an API gateway' do
@@ -33,8 +40,8 @@ describe 'API gateway' do
 
   # rubocop:disable RSpec/MultipleExpectations
   it 'uses a name including the component and deployment identifier' do
-    expect(api_gateway.name).to(match(/.*#{vars.component}.*/))
-    expect(api_gateway.name).to(match(/.*#{vars.deployment_identifier}.*/))
+    expect(api_gateway.name).to(match(/.*#{component}.*/))
+    expect(api_gateway.name).to(match(/.*#{deployment_identifier}.*/))
   end
   # rubocop:enable RSpec/MultipleExpectations
 
@@ -50,8 +57,8 @@ describe 'API gateway' do
     expect(api_gateway.tags)
       .to(include(
             {
-              'Component' => vars.component,
-              'DeploymentIdentifier' => vars.deployment_identifier
+              'Component' => component,
+              'DeploymentIdentifier' => deployment_identifier
             }
           ))
   end
@@ -68,16 +75,16 @@ describe 'API gateway' do
     # rubocop:disable RSpec/MultipleExpectations
     it 'uses a description including the component and deployment identifier' do
       expect(api_gateway.description)
-        .to(match(/.*#{vars.component}.*/))
+        .to(match(/.*#{component}.*/))
       expect(api_gateway.description)
-        .to(match(/.*#{vars.deployment_identifier}.*/))
+        .to(match(/.*#{deployment_identifier}.*/))
     end
     # rubocop:enable RSpec/MultipleExpectations
   end
 
   describe 'when protocol type is WEBSOCKET' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           protocol_type: 'WEBSOCKET'
@@ -92,7 +99,7 @@ describe 'API gateway' do
 
   describe 'when protocol type is HTTP' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           protocol_type: 'HTTP'
@@ -107,7 +114,7 @@ describe 'API gateway' do
 
   describe 'when enable_execute_api_endpoint is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           enable_execute_api_endpoint: false
@@ -122,7 +129,7 @@ describe 'API gateway' do
 
   describe 'when enable_execute_api_endpoint is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           enable_execute_api_endpoint: true
@@ -137,7 +144,7 @@ describe 'API gateway' do
 
   describe 'when tags are provided and include_default_tags is not provided' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           tags: { Alpha: 'beta', Gamma: 'delta' }
@@ -149,8 +156,8 @@ describe 'API gateway' do
       expect(api_gateway.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier,
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier,
                 'Alpha' => 'beta',
                 'Gamma' => 'delta'
               }
@@ -160,7 +167,7 @@ describe 'API gateway' do
 
   describe 'when tags are provided and include_default_tags is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           include_default_tags: false,
@@ -181,8 +188,8 @@ describe 'API gateway' do
       expect(api_gateway.tags)
         .not_to(include(
                   {
-                    'Component' => vars.component,
-                    'DeploymentIdentifier' => vars.deployment_identifier
+                    'Component' => component,
+                    'DeploymentIdentifier' => deployment_identifier
                   }
                 ))
     end
@@ -191,7 +198,7 @@ describe 'API gateway' do
 
   describe 'when tags are provided and include_default_tags is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           include_default_tags: true,
@@ -204,8 +211,8 @@ describe 'API gateway' do
       expect(api_gateway.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier,
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier,
                 'Alpha' => 'beta',
                 'Gamma' => 'delta'
               }
@@ -215,7 +222,7 @@ describe 'API gateway' do
 
   describe 'when include_default_tags is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           include_default_tags: false
@@ -227,8 +234,8 @@ describe 'API gateway' do
       expect(api_gateway.tags)
         .not_to(include(
                   {
-                    'Component' => vars.component,
-                    'DeploymentIdentifier' => vars.deployment_identifier
+                    'Component' => component,
+                    'DeploymentIdentifier' => deployment_identifier
                   }
                 ))
     end
@@ -236,7 +243,7 @@ describe 'API gateway' do
 
   describe 'when include_default_tags is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           include_default_tags: true
@@ -248,8 +255,8 @@ describe 'API gateway' do
       expect(api_gateway.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier
               }
             ))
     end

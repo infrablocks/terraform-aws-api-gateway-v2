@@ -5,9 +5,9 @@ Terraform AWS API Gateway V2
 
 A Terraform module for creating an AWS API Gateway using the V2 API.
 
-The access control deployment has no requirements.
+The API gateway deployment has no requirements.
  
-The AWS API Gateway deployment consists of:
+The API gateway deployment consists of:
 * An API gateway
 * An optional default stage
 * An optional default stage domain name
@@ -126,13 +126,13 @@ aws-vault exec <profile> -- ./go deployment:prerequisites:provision[<deployment_
 To provision the module contents:
 
 ```bash
-aws-vault exec <profile> -- ./go deployment:harness:provision[<deployment_identifier>]
+aws-vault exec <profile> -- ./go deployment:root:provision[<deployment_identifier>]
 ```
 
 To destroy the module contents:
 
 ```bash
-aws-vault exec <profile> -- ./go deployment:harness:destroy[<deployment_identifier>]
+aws-vault exec <profile> -- ./go deployment:root:destroy[<deployment_identifier>]
 ```
 
 To destroy the module prerequisites:

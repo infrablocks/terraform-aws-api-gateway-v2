@@ -192,14 +192,14 @@ namespace :deployment do
     end
   end
 
-  namespace :harness do
+  namespace :root do
     RakeTerraform.define_command_tasks(
-      configuration_name: 'harness',
+      configuration_name: 'root',
       argument_names: [:deployment_identifier]
     ) do |t, args|
       deployment_configuration =
         configuration
-        .for(:harness, args.to_h)
+        .for(:root, args.to_h)
 
       state_file = deployment_configuration.state_file
       vars = deployment_configuration

@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe 'default stage route53 record' do
-  let(:hosted_zone_id) { vars.hosted_zone_id }
+  let(:hosted_zone_id) { vars(:root).hosted_zone_id }
 
   let(:hosted_zone) do
     route53_hosted_zone(hosted_zone_id)
@@ -14,8 +14,8 @@ describe 'default stage route53 record' do
   end
 
   let(:output_domain_name_configuration) do
-    output_for(
-      :harness,
+    output(
+      :root,
       'default_stage_domain_name_configuration'
     )
   end
@@ -29,21 +29,21 @@ describe 'default stage route53 record' do
   end
 
   before(:context) do
-    provision do |vars|
+    provision(:root) do |vars|
       vars.merge(
         default_stage_domain_name: configuration.domain_name,
         default_stage_domain_name_certificate_arn:
-          output_for(:prerequisites, 'certificate_arn')
+          output(:prerequisites, 'certificate_arn')
       )
     end
   end
 
   after(:context) do
-    destroy do |vars|
+    destroy(:root) do |vars|
       vars.merge(
         default_stage_domain_name: configuration.domain_name,
         default_stage_domain_name_certificate_arn:
-          output_for(:prerequisites, 'certificate_arn')
+          output(:prerequisites, 'certificate_arn')
       )
     end
   end
@@ -62,7 +62,7 @@ describe 'default stage route53 record' do
   describe 'when include_default_stage_domain_name is false and ' \
            'include_default_stage_dns_record is not provided' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false
         )
@@ -83,12 +83,12 @@ describe 'default stage route53 record' do
   describe 'when include_default_stage_domain_name is true and ' \
            'include_default_stage_dns_record is not provided' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: true,
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
-            output_for(:prerequisites, 'certificate_arn')
+            output(:prerequisites, 'certificate_arn')
         )
       end
     end
@@ -106,7 +106,7 @@ describe 'default stage route53 record' do
   describe 'when include_default_stage_domain_name is false and ' \
            'include_default_stage_dns_record is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           include_default_stage_dns_record: false
@@ -128,13 +128,13 @@ describe 'default stage route53 record' do
   describe 'when include_default_stage_domain_name is true and ' \
            'include_default_stage_dns_record is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: true,
           include_default_stage_dns_record: false,
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
-            output_for(:prerequisites, 'certificate_arn')
+            output(:prerequisites, 'certificate_arn')
         )
       end
     end
@@ -153,7 +153,7 @@ describe 'default stage route53 record' do
   describe 'when include_default_stage_domain_name is false and ' \
            'include_default_stage_dns_record is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           include_default_stage_dns_record: true
@@ -175,13 +175,13 @@ describe 'default stage route53 record' do
   describe 'when include_default_stage_domain_name is true and ' \
            'include_default_stage_dns_record is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: true,
           include_default_stage_dns_record: true,
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
-            output_for(:prerequisites, 'certificate_arn')
+            output(:prerequisites, 'certificate_arn')
         )
       end
     end
@@ -199,12 +199,12 @@ describe 'default stage route53 record' do
   describe 'when include_default_stage_domain_name is not provided and ' \
            'include_default_stage_dns_record is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_dns_record: false,
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
-            output_for(:prerequisites, 'certificate_arn')
+            output(:prerequisites, 'certificate_arn')
         )
       end
     end
@@ -223,12 +223,12 @@ describe 'default stage route53 record' do
   describe 'when include_default_stage_domain_name is not provided and ' \
            'include_default_stage_dns_record is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_dns_record: true,
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
-            output_for(:prerequisites, 'certificate_arn')
+            output(:prerequisites, 'certificate_arn')
         )
       end
     end

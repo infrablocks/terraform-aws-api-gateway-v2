@@ -3,8 +3,11 @@
 require 'spec_helper'
 
 describe 'default stage' do
+  let(:component) { vars(:root).component }
+  let(:deployment_identifier) { vars(:root).deployment_identifier }
+
   let(:output_api_gateway_id) do
-    output_for(:harness, 'api_gateway_id')
+    output(:root, 'api_gateway_id')
   end
 
   let(:api_gateway_stages) do
@@ -16,11 +19,15 @@ describe 'default stage' do
   end
 
   before(:context) do
-    provision { |vars| vars.merge(include_default_stage_domain_name: false) }
+    provision(:root) do |vars|
+      vars.merge(include_default_stage_domain_name: false)
+    end
   end
 
   after(:context) do
-    destroy { |vars| vars.merge(include_default_stage_domain_name: false) }
+    destroy(:root) do |vars|
+      vars.merge(include_default_stage_domain_name: false)
+    end
   end
 
   describe 'by default' do
@@ -36,9 +43,9 @@ describe 'default stage' do
     it 'uses a stage description including the component and ' \
        'deployment identifier' do
       expect(api_gateway_stage.description)
-        .to(match(/.*#{vars.component}.*/))
+        .to(match(/.*#{component}.*/))
       expect(api_gateway_stage.description)
-        .to(match(/.*#{vars.deployment_identifier}.*/))
+        .to(match(/.*#{deployment_identifier}.*/))
     end
     # rubocop:enable RSpec/MultipleExpectations
 
@@ -50,8 +57,8 @@ describe 'default stage' do
       expect(api_gateway_stage.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier
               }
             ))
     end
@@ -59,7 +66,7 @@ describe 'default stage' do
 
   describe 'when include_default_stage is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage: false
         )
@@ -73,7 +80,7 @@ describe 'default stage' do
 
   describe 'when include_default_stage is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage: true,
           include_default_stage_domain_name: false
@@ -93,9 +100,9 @@ describe 'default stage' do
     it 'uses a stage description including the component and ' \
        'deployment identifier' do
       expect(api_gateway_stage.description)
-        .to(match(/.*#{vars.component}.*/))
+        .to(match(/.*#{component}.*/))
       expect(api_gateway_stage.description)
-        .to(match(/.*#{vars.deployment_identifier}.*/))
+        .to(match(/.*#{deployment_identifier}.*/))
     end
     # rubocop:enable RSpec/MultipleExpectations
 
@@ -107,8 +114,8 @@ describe 'default stage' do
       expect(api_gateway_stage.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier
               }
             ))
     end
@@ -116,7 +123,7 @@ describe 'default stage' do
 
   describe 'when enable_default_stage_auto_deploy is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           enable_default_stage_auto_deploy: false,
           include_default_stage_domain_name: false
@@ -131,7 +138,7 @@ describe 'default stage' do
 
   describe 'when enable_default_stage_auto_deploy is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           enable_default_stage_auto_deploy: true,
           include_default_stage_domain_name: false
@@ -146,7 +153,7 @@ describe 'default stage' do
 
   describe 'when tags are provided and include_default_tags is not provided' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           tags: { Alpha: 'beta', Gamma: 'delta' }
@@ -158,8 +165,8 @@ describe 'default stage' do
       expect(api_gateway_stage.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier,
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier,
                 'Alpha' => 'beta',
                 'Gamma' => 'delta'
               }
@@ -169,7 +176,7 @@ describe 'default stage' do
 
   describe 'when tags are provided and include_default_tags is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           include_default_tags: false,
@@ -190,8 +197,8 @@ describe 'default stage' do
       expect(api_gateway_stage.tags)
         .not_to(include(
                   {
-                    'Component' => vars.component,
-                    'DeploymentIdentifier' => vars.deployment_identifier
+                    'Component' => component,
+                    'DeploymentIdentifier' => deployment_identifier
                   }
                 ))
     end
@@ -200,7 +207,7 @@ describe 'default stage' do
 
   describe 'when tags are provided and include_default_tags is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           include_default_tags: true,
@@ -213,8 +220,8 @@ describe 'default stage' do
       expect(api_gateway_stage.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier,
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier,
                 'Alpha' => 'beta',
                 'Gamma' => 'delta'
               }
@@ -224,7 +231,7 @@ describe 'default stage' do
 
   describe 'when include_default_tags is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           include_default_tags: false
@@ -236,8 +243,8 @@ describe 'default stage' do
       expect(api_gateway_stage.tags)
         .not_to(include(
                   {
-                    'Component' => vars.component,
-                    'DeploymentIdentifier' => vars.deployment_identifier
+                    'Component' => component,
+                    'DeploymentIdentifier' => deployment_identifier
                   }
                 ))
     end
@@ -245,7 +252,7 @@ describe 'default stage' do
 
   describe 'when include_default_tags is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false,
           include_default_tags: true
@@ -257,8 +264,8 @@ describe 'default stage' do
       expect(api_gateway_stage.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier
               }
             ))
     end

@@ -3,16 +3,19 @@
 require 'spec_helper'
 
 describe 'default stage domain name' do
+  let(:component) { vars(:root).component }
+  let(:deployment_identifier) { vars(:root).deployment_identifier }
+
   let(:output_api_gateway_id) do
-    output_for(:harness, 'api_gateway_id')
+    output(:root, 'api_gateway_id')
   end
 
   let(:output_default_stage_api_mapping_id) do
-    output_for(:harness, 'default_stage_api_mapping_id')
+    output(:root, 'default_stage_api_mapping_id')
   end
 
   let(:default_stage_domain_name_certificate_arn) do
-    output_for(:prerequisites, 'certificate_arn')
+    output(:prerequisites, 'certificate_arn')
   end
 
   let(:default_stage_domain_name) do
@@ -37,32 +40,32 @@ describe 'default stage domain name' do
   end
 
   before(:context) do
-    provision do |vars|
+    provision(:root) do |vars|
       vars.merge(
         default_stage_domain_name: configuration.domain_name,
         default_stage_domain_name_certificate_arn:
-          output_for(:prerequisites, 'certificate_arn')
+          output(:prerequisites, 'certificate_arn')
       )
     end
   end
 
   after(:context) do
-    destroy do |vars|
+    destroy(:root) do |vars|
       vars.merge(
         default_stage_domain_name: configuration.domain_name,
         default_stage_domain_name_certificate_arn:
-          output_for(:prerequisites, 'certificate_arn')
+          output(:prerequisites, 'certificate_arn')
       )
     end
   end
 
   describe 'by default' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
-            output_for(:prerequisites, 'certificate_arn')
+            output(:prerequisites, 'certificate_arn')
         )
       end
     end
@@ -100,8 +103,8 @@ describe 'default stage domain name' do
       expect(api_gateway_default_stage_domain_name.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier
               }
             ))
     end
@@ -109,7 +112,7 @@ describe 'default stage domain name' do
 
   describe 'when include_default_stage_domain_name is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: false
         )
@@ -123,12 +126,12 @@ describe 'default stage domain name' do
 
   describe 'when include_default_stage_domain_name is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           include_default_stage_domain_name: true,
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
-            output_for(:prerequisites, 'certificate_arn')
+            output(:prerequisites, 'certificate_arn')
         )
       end
     end
@@ -166,8 +169,8 @@ describe 'default stage domain name' do
       expect(api_gateway_default_stage_domain_name.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier
               }
             ))
     end
@@ -175,11 +178,11 @@ describe 'default stage domain name' do
 
   describe 'when tags are provided and include_default_tags is not provided' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
-            output_for(:prerequisites, 'certificate_arn'),
+            output(:prerequisites, 'certificate_arn'),
           tags: { Alpha: 'beta', Gamma: 'delta' }
         )
       end
@@ -189,8 +192,8 @@ describe 'default stage domain name' do
       expect(api_gateway_default_stage_domain_name.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier,
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier,
                 'Alpha' => 'beta',
                 'Gamma' => 'delta'
               }
@@ -200,11 +203,11 @@ describe 'default stage domain name' do
 
   describe 'when tags are provided and include_default_tags is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
-            output_for(:prerequisites, 'certificate_arn'),
+            output(:prerequisites, 'certificate_arn'),
           include_default_tags: false,
           tags: { Alpha: 'beta', Gamma: 'delta' }
         )
@@ -223,8 +226,8 @@ describe 'default stage domain name' do
       expect(api_gateway_default_stage_domain_name.tags)
         .not_to(include(
                   {
-                    'Component' => vars.component,
-                    'DeploymentIdentifier' => vars.deployment_identifier
+                    'Component' => component,
+                    'DeploymentIdentifier' => deployment_identifier
                   }
                 ))
     end
@@ -233,11 +236,11 @@ describe 'default stage domain name' do
 
   describe 'when tags are provided and include_default_tags is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
-            output_for(:prerequisites, 'certificate_arn'),
+            output(:prerequisites, 'certificate_arn'),
           include_default_tags: true,
           tags: { Alpha: 'beta', Gamma: 'delta' }
         )
@@ -248,8 +251,8 @@ describe 'default stage domain name' do
       expect(api_gateway_default_stage_domain_name.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier,
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier,
                 'Alpha' => 'beta',
                 'Gamma' => 'delta'
               }
@@ -259,11 +262,11 @@ describe 'default stage domain name' do
 
   describe 'when include_default_tags is false' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
-            output_for(:prerequisites, 'certificate_arn'),
+            output(:prerequisites, 'certificate_arn'),
           include_default_tags: false
         )
       end
@@ -273,8 +276,8 @@ describe 'default stage domain name' do
       expect(api_gateway_default_stage_domain_name.tags)
         .not_to(include(
                   {
-                    'Component' => vars.component,
-                    'DeploymentIdentifier' => vars.deployment_identifier
+                    'Component' => component,
+                    'DeploymentIdentifier' => deployment_identifier
                   }
                 ))
     end
@@ -282,11 +285,11 @@ describe 'default stage domain name' do
 
   describe 'when include_default_tags is true' do
     before(:context) do
-      provision do |vars|
+      provision(:root) do |vars|
         vars.merge(
           default_stage_domain_name: configuration.domain_name,
           default_stage_domain_name_certificate_arn:
-            output_for(:prerequisites, 'certificate_arn'),
+            output(:prerequisites, 'certificate_arn'),
           include_default_tags: true
         )
       end
@@ -296,8 +299,8 @@ describe 'default stage domain name' do
       expect(api_gateway_default_stage_domain_name.tags)
         .to(include(
               {
-                'Component' => vars.component,
-                'DeploymentIdentifier' => vars.deployment_identifier
+                'Component' => component,
+                'DeploymentIdentifier' => deployment_identifier
               }
             ))
     end
