@@ -38,3 +38,15 @@ resource "aws_apigatewayv2_api" "api_gateway" {
   description   = "Provided API gateway for component: \"${var.component}\" and deployment identifier: \"${var.deployment_identifier}\"."
   protocol_type = "HTTP"
 }
+
+resource "aws_security_group" "vpc_link" {
+  name        = "provided-vpc-link-sg-${var.component}-${var.deployment_identifier}"
+  description = "Provided VPC link security group for: ${var.component}, deployment: ${var.deployment_identifier}"
+  vpc_id      = module.base_networking.vpc_id
+}
+
+resource "aws_apigatewayv2_vpc_link" "vpc_link" {
+  name               = "provided-vpc-link-${var.component}-${var.deployment_identifier}"
+  security_group_ids = [aws_security_group.vpc_link.id]
+  subnet_ids         = module.base_networking.private_subnet_ids
+}
