@@ -2,9 +2,11 @@
 
 require 'spec_helper'
 
-describe 'stage domain name' do
+fdescribe 'stage domain name' do
   let(:component) { vars(:stage).component }
   let(:deployment_identifier) { vars(:stage).deployment_identifier }
+
+  let(:hosted_zone_id) { configuration.public_zone_id }
 
   let(:api_id) do
     output(:prerequisites, 'api_id')
@@ -43,6 +45,7 @@ describe 'stage domain name' do
     provision(:stage) do |vars|
       vars.merge(
         api_id: output(:prerequisites, 'api_id'),
+        hosted_zone_id: configuration.public_zone_id,
         domain_name: configuration.domain_name,
         domain_name_certificate_arn:
           output(:prerequisites, 'certificate_arn')
@@ -54,6 +57,7 @@ describe 'stage domain name' do
     destroy(:stage) do |vars|
       vars.merge(
         api_id: output(:prerequisites, 'api_id'),
+        hosted_zone_id: configuration.public_zone_id,
         domain_name: configuration.domain_name,
         domain_name_certificate_arn:
           output(:prerequisites, 'certificate_arn')
@@ -66,6 +70,7 @@ describe 'stage domain name' do
       provision(:stage) do |vars|
         vars.merge(
           api_id: output(:prerequisites, 'api_id'),
+          hosted_zone_id: configuration.public_zone_id,
           domain_name: configuration.domain_name,
           domain_name_certificate_arn:
             output(:prerequisites, 'certificate_arn')
@@ -118,6 +123,7 @@ describe 'stage domain name' do
       provision(:stage) do |vars|
         vars.merge(
           api_id: output(:prerequisites, 'api_id'),
+          hosted_zone_id: configuration.public_zone_id,
           include_domain_name: false
         )
       end
@@ -133,6 +139,7 @@ describe 'stage domain name' do
       provision(:stage) do |vars|
         vars.merge(
           api_id: output(:prerequisites, 'api_id'),
+          hosted_zone_id: configuration.public_zone_id,
           include_domain_name: true,
           domain_name: configuration.domain_name,
           domain_name_certificate_arn:
@@ -186,6 +193,7 @@ describe 'stage domain name' do
       provision(:stage) do |vars|
         vars.merge(
           api_id: output(:prerequisites, 'api_id'),
+          hosted_zone_id: configuration.public_zone_id,
           domain_name: configuration.domain_name,
           domain_name_certificate_arn:
             output(:prerequisites, 'certificate_arn'),
@@ -212,6 +220,7 @@ describe 'stage domain name' do
       provision(:stage) do |vars|
         vars.merge(
           api_id: output(:prerequisites, 'api_id'),
+          hosted_zone_id: configuration.public_zone_id,
           domain_name: configuration.domain_name,
           domain_name_certificate_arn:
             output(:prerequisites, 'certificate_arn'),
@@ -246,6 +255,7 @@ describe 'stage domain name' do
       provision(:stage) do |vars|
         vars.merge(
           api_id: output(:prerequisites, 'api_id'),
+          hosted_zone_id: configuration.public_zone_id,
           domain_name: configuration.domain_name,
           domain_name_certificate_arn:
             output(:prerequisites, 'certificate_arn'),
@@ -273,6 +283,7 @@ describe 'stage domain name' do
       provision(:stage) do |vars|
         vars.merge(
           api_id: output(:prerequisites, 'api_id'),
+          hosted_zone_id: configuration.public_zone_id,
           domain_name: configuration.domain_name,
           domain_name_certificate_arn:
             output(:prerequisites, 'certificate_arn'),
@@ -297,6 +308,7 @@ describe 'stage domain name' do
       provision(:stage) do |vars|
         vars.merge(
           api_id: output(:prerequisites, 'api_id'),
+          hosted_zone_id: configuration.public_zone_id,
           domain_name: configuration.domain_name,
           domain_name_certificate_arn:
             output(:prerequisites, 'certificate_arn'),
