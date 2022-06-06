@@ -1,7 +1,7 @@
 resource "aws_route53_record" "record" {
   provider = aws.dns
 
-  count = var.include_domain_name == true && var.include_dns_record == true ? 1 : 0
+  count = local.include_domain_name == true && local.include_dns_record == true ? 1 : 0
 
   zone_id = var.hosted_zone_id
   name = var.domain_name

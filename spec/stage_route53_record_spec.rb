@@ -3,7 +3,11 @@
 require 'spec_helper'
 
 describe 'stage route53 record' do
-  let(:hosted_zone_id) { vars(:stage).hosted_zone_id }
+  let(:hosted_zone_id) { configuration.public_zone_id }
+
+  let(:api_id) do
+    output(:prerequisites, 'api_id')
+  end
 
   let(:hosted_zone) do
     route53_hosted_zone(hosted_zone_id)
@@ -16,7 +20,7 @@ describe 'stage route53 record' do
   let(:output_domain_name_configuration) do
     output(
       :stage,
-      'default_stage_domain_name_configuration'
+      'domain_name_configuration'
     )
   end
 
@@ -31,6 +35,8 @@ describe 'stage route53 record' do
   before(:context) do
     provision(:stage) do |vars|
       vars.merge(
+        api_id: output(:prerequisites, 'api_id'),
+        hosted_zone_id: configuration.public_zone_id,
         domain_name: configuration.domain_name,
         domain_name_certificate_arn:
           output(:prerequisites, 'certificate_arn')
@@ -41,6 +47,8 @@ describe 'stage route53 record' do
   after(:context) do
     destroy(:stage) do |vars|
       vars.merge(
+        api_id: output(:prerequisites, 'api_id'),
+        hosted_zone_id: configuration.public_zone_id,
         domain_name: configuration.domain_name,
         domain_name_certificate_arn:
           output(:prerequisites, 'certificate_arn')
@@ -64,6 +72,7 @@ describe 'stage route53 record' do
     before(:context) do
       provision(:stage) do |vars|
         vars.merge(
+          api_id: output(:prerequisites, 'api_id'),
           include_domain_name: false
         )
       end
@@ -85,6 +94,8 @@ describe 'stage route53 record' do
     before(:context) do
       provision(:stage) do |vars|
         vars.merge(
+          api_id: output(:prerequisites, 'api_id'),
+          hosted_zone_id: configuration.public_zone_id,
           include_domain_name: true,
           domain_name: configuration.domain_name,
           domain_name_certificate_arn:
@@ -108,6 +119,7 @@ describe 'stage route53 record' do
     before(:context) do
       provision(:stage) do |vars|
         vars.merge(
+          api_id: output(:prerequisites, 'api_id'),
           include_domain_name: false,
           include_dns_record: false
         )
@@ -130,6 +142,7 @@ describe 'stage route53 record' do
     before(:context) do
       provision(:stage) do |vars|
         vars.merge(
+          api_id: output(:prerequisites, 'api_id'),
           include_domain_name: true,
           include_dns_record: false,
           domain_name: configuration.domain_name,
@@ -155,6 +168,7 @@ describe 'stage route53 record' do
     before(:context) do
       provision(:stage) do |vars|
         vars.merge(
+          api_id: output(:prerequisites, 'api_id'),
           include_domain_name: false,
           include_dns_record: true
         )
@@ -177,6 +191,8 @@ describe 'stage route53 record' do
     before(:context) do
       provision(:stage) do |vars|
         vars.merge(
+          api_id: output(:prerequisites, 'api_id'),
+          hosted_zone_id: configuration.public_zone_id,
           include_domain_name: true,
           include_dns_record: true,
           domain_name: configuration.domain_name,
@@ -201,6 +217,7 @@ describe 'stage route53 record' do
     before(:context) do
       provision(:stage) do |vars|
         vars.merge(
+          api_id: output(:prerequisites, 'api_id'),
           include_dns_record: false,
           domain_name: configuration.domain_name,
           domain_name_certificate_arn:
@@ -225,6 +242,8 @@ describe 'stage route53 record' do
     before(:context) do
       provision(:stage) do |vars|
         vars.merge(
+          api_id: output(:prerequisites, 'api_id'),
+          hosted_zone_id: configuration.public_zone_id,
           include_dns_record: true,
           domain_name: configuration.domain_name,
           domain_name_certificate_arn:
