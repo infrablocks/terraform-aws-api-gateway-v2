@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe 'stage domain name' do
+describe 'stage domain name' do
   let(:component) { vars(:stage).component }
   let(:deployment_identifier) { vars(:stage).deployment_identifier }
 
