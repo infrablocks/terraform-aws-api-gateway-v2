@@ -14,7 +14,6 @@ module "vpc_link" {
   deployment_identifier = var.deployment_identifier
 
   vpc_id              = var.vpc_id
-  vpc_link_id         = var.vpc_link_id
   vpc_link_subnet_ids = var.vpc_link_subnet_ids
 
   tags = var.tags
