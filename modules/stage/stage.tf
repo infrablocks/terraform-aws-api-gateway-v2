@@ -5,4 +5,9 @@ resource "aws_apigatewayv2_stage" "stage" {
   auto_deploy = local.enable_auto_deploy
 
   tags = local.tags
+
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.access_logs.arn
+    format          = var.access_logging_log_format
+  }
 }

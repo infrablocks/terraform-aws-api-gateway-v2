@@ -13,3 +13,6 @@ output "api_id" {
 output "vpc_link_security_group_id" {
   value = aws_security_group.vpc_link.id
 }
+output "log_group_arn" {
+  value = aws_cloudwatch_log_group.log_group.arn
+}

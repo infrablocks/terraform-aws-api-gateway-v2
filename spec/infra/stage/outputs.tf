@@ -21,3 +21,11 @@ output "domain_name_arn" {
 output "domain_name_configuration" {
   value = module.stage.domain_name_configuration
 }
+
+output "access_logging_log_group_arn" {
+  value = module.stage.access_logging_log_group_arn
+}
+
+output "access_logging_log_group_name" {
+  value = module.stage.access_logging_log_group_name
+}

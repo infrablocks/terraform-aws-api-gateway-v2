@@ -50,3 +50,7 @@ resource "aws_apigatewayv2_vpc_link" "vpc_link" {
   security_group_ids = [aws_security_group.vpc_link.id]
   subnet_ids         = module.base_networking.private_subnet_ids
 }
+
+resource "aws_cloudwatch_log_group" "log_group" {
+  name = "provided-log-group-${var.component}-${var.deployment_identifier}"
+}

@@ -16,8 +16,17 @@ variable "domain_name_certificate_arn" {
   default = null
 }
 
+variable "access_logging_log_group_arn" {
+  default = null
+}
+
 variable "tags" {
   type    = map(string)
+  default = null
+}
+
+variable "enable_auto_deploy" {
+  type    = bool
   default = null
 }
 
@@ -33,7 +42,7 @@ variable "include_dns_record" {
   type    = bool
   default = null
 }
-variable "enable_auto_deploy" {
+variable "include_access_logging_log_group" {
   type    = bool
   default = null
 }

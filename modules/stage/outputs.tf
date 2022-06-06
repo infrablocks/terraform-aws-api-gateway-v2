@@ -21,3 +21,10 @@ output "domain_name_arn" {
 output "domain_name_configuration" {
   value = try(aws_apigatewayv2_domain_name.domain_name[0].domain_name_configuration[0], {})
 }
+
+output "access_logging_log_group_arn" {
+  value = aws_cloudwatch_log_group.access_logs.arn
+}
+output "access_logging_log_group_name" {
+  value = aws_cloudwatch_log_group.access_logs.name
+}
