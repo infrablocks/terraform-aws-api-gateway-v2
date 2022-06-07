@@ -6,6 +6,8 @@ locals {
   include_dns_record   = var.include_dns_record == null ? true : var.include_dns_record
   enable_auto_deploy   = var.enable_auto_deploy == null ? true : var.enable_auto_deploy
 
+  sanitised_name = replace(var.name, "$", "")
+
   default_tags = local.include_default_tags == true ? {
     Component            = var.component
     DeploymentIdentifier = var.deployment_identifier
