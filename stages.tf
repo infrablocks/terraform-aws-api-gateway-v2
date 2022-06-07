@@ -16,10 +16,11 @@ module "default_stage" {
 
   tags = var.tags
 
+  enable_auto_deploy   = local.enable_default_stage_auto_deploy
+
   include_default_tags = local.include_default_tags
   include_domain_name  = local.include_default_stage_domain_name
   include_dns_record   = local.include_default_stage_dns_record
-  enable_auto_deploy   = local.enable_default_stage_auto_deploy
 
   providers = {
     aws = aws
