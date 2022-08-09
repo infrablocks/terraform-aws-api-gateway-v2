@@ -161,7 +161,7 @@ namespace :test do
     task check: [:rubocop]
 
     desc 'Attempt to automatically fix issues with the test code'
-    task fix: [:'rubocop:autocorrect']
+    task fix: [:'rubocop:auto_correct']
   end
 
   RSpec::Core::RakeTask.new(integration: ['terraform:ensure']) do
