@@ -6,8 +6,9 @@ Terraform AWS API Gateway V2
 A Terraform module for creating an AWS API Gateway using the V2 API.
 
 The API gateway deployment has no requirements.
- 
+
 The API gateway deployment consists of:
+
 * An API gateway
 * An optional default stage
 * An optional default stage domain name
@@ -21,13 +22,13 @@ configuration:
 
 ```hcl-terraform
 module "api_gateway" {
-  source = "infrablocks/api-gateway-v2/aws"
+  source  = "infrablocks/api-gateway-v2/aws"
   version = "1.0.0"
 }
 ```
 
-See the 
-[Terraform registry entry](https://registry.terraform.io/modules/infrablocks/api-gateway-v2/aws/latest) 
+See the
+[Terraform registry entry](https://registry.terraform.io/modules/infrablocks/api-gateway-v2/aws/latest)
 for more details.
 
 ### Inputs
@@ -42,7 +43,7 @@ for more details.
 
 ### Compatibility
 
-This module is compatible with Terraform versions greater than or equal to 
+This module is compatible with Terraform versions greater than or equal to
 Terraform 1.0.
 
 Development
@@ -50,7 +51,7 @@ Development
 
 ### Machine Requirements
 
-In order for the build to run correctly, a few tools will need to be installed 
+In order for the build to run correctly, a few tools will need to be installed
 on your development machine:
 
 * Ruby (3.1.1)
@@ -104,13 +105,13 @@ direnv allow <repository-directory>
 
 ### Running the build
 
-Running the build requires an AWS account and AWS credentials. You are free to 
+Running the build requires an AWS account and AWS credentials. You are free to
 configure credentials however you like as long as an access key ID and secret
-access key are available. These instructions utilise 
+access key are available. These instructions utilise
 [aws-vault](https://github.com/99designs/aws-vault) which makes credential
 management easy and secure.
 
-To provision module infrastructure, run tests and then destroy that 
+To provision module infrastructure, run tests and then destroy that
 infrastructure, execute:
 
 ```bash
@@ -147,7 +148,7 @@ Configuration parameters can be overridden via environment variables:
 DEPLOYMENT_IDENTIFIER=testing aws-vault exec <profile> -- ./go
 ```
 
-When a deployment identifier is provided via an environment variable, 
+When a deployment identifier is provided via an environment variable,
 infrastructure will not be destroyed at the end of test execution. This can
 be useful during development to avoid lengthy provision and destroy cycles.
 
@@ -171,6 +172,7 @@ ssh-keygen -m PEM -t rsa -b 4096 -C integration-test@example.com -N '' -f config
 #### Generating a self-signed certificate
 
 To generate a self signed certificate:
+
 ```
 openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
 ```
@@ -207,14 +209,14 @@ openssl aes-256-cbc \
 Contributing
 ------------
 
-Bug reports and pull requests are welcome on GitHub at 
-https://github.com/infrablocks/terraform-aws-api-gateway-v2. 
-This project is intended to be a safe, welcoming space for collaboration, and 
-contributors are expected to adhere to 
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/infrablocks/terraform-aws-api-gateway-v2.
+This project is intended to be a safe, welcoming space for collaboration, and
+contributors are expected to adhere to
 the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 License
 -------
 
-The library is available as open source under the terms of the 
+The library is available as open source under the terms of the
 [MIT License](http://opensource.org/licenses/MIT).
