@@ -1,6 +1,6 @@
 ---
-source_directory: "spec/infra/stage"
-state_file: "%{hiera('project_directory')}/state/stage.tfstate"
+configuration_directory: "%{cwd}/spec/unit/infra/stage"
+state_file: "%{cwd}/state/stage.tfstate"
 vars:
   region: "%{hiera('region')}"
 

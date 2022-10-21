@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'confidante'
 require 'git'
 require 'rake_circle_ci'
 require 'rake_github'
@@ -12,10 +13,10 @@ require 'securerandom'
 require 'semantic'
 require 'yaml'
 
-require_relative 'lib/configuration'
+require_relative 'lib/paths'
 require_relative 'lib/version'
 
-configuration = Configuration.new
+configuration = Confidante.configuration
 
 def repo
   Git.open(Pathname.new('.'))
@@ -29,12 +30,13 @@ end
 
 task default: %i[
   test:code:fix
+  test:unit
   test:integration
 ]
 
 RakeTerraform.define_installation_tasks(
   path: File.join(Dir.pwd, 'vendor', 'terraform'),
-  version: '1.0.11'
+  version: '1.3.1'
 )
 
 namespace :encryption do
@@ -161,16 +163,22 @@ namespace :test do
     task check: [:rubocop]
 
     desc 'Attempt to automatically fix issues with the test code'
-    task fix: [:'rubocop:auto_correct']
+    task fix: [:'rubocop:autocorrect_all']
   end
 
-  RSpec::Core::RakeTask.new(integration: ['terraform:ensure']) do
-    plugin_cache_directory =
-      "#{Paths.project_root_directory}/vendor/terraform/plugins"
+  desc 'Run module unit tests'
+  RSpec::Core::RakeTask.new(unit: ['terraform:ensure']) do |t|
+    t.pattern = 'spec/unit/**{,/*/**}/*_spec.rb'
+    t.rspec_opts = '-I spec/unit'
 
-    mkdir_p(plugin_cache_directory)
+    ENV['AWS_REGION'] = configuration.region
+  end
 
-    ENV['TF_PLUGIN_CACHE_DIR'] = plugin_cache_directory
+  desc 'Run module integration tests'
+  RSpec::Core::RakeTask.new(integration: ['terraform:ensure']) do |t|
+    t.pattern = 'spec/integration/**{,/*/**}/*_spec.rb'
+    t.rspec_opts = '-I spec/integration'
+
     ENV['AWS_REGION'] = configuration.region
   end
 end
@@ -179,13 +187,15 @@ namespace :deployment do
   namespace :prerequisites do
     RakeTerraform.define_command_tasks(
       configuration_name: 'prerequisites',
-      argument_names: [:deployment_identifier]
+      argument_names: [:seed]
     ) do |t, args|
       deployment_configuration =
-        configuration.for(:prerequisites, args)
+        configuration
+        .for_scope(role: :prerequisites)
+        .for_overrides(args.to_h)
 
-      t.source_directory = deployment_configuration.source_directory
-      t.work_directory = deployment_configuration.work_directory
+      t.source_directory = 'spec/unit/infra/prerequisites'
+      t.work_directory = 'build/infra'
 
       t.state_file = deployment_configuration.state_file
       t.vars = deployment_configuration.vars
@@ -195,22 +205,18 @@ namespace :deployment do
   namespace :root do
     RakeTerraform.define_command_tasks(
       configuration_name: 'root',
-      argument_names: [:deployment_identifier]
+      argument_names: [:seed]
     ) do |t, args|
       deployment_configuration =
         configuration
-        .for(:root, args.to_h)
+        .for_scope(role: :root)
+        .for_overrides(args.to_h)
 
-      state_file = deployment_configuration.state_file
-      vars = deployment_configuration
-             .vars.to_h
-             .merge(include_default_stage_domain_name: 'false')
+      t.source_directory = 'spec/unit/infra/root'
+      t.work_directory = 'build/infra'
 
-      t.source_directory = deployment_configuration.source_directory
-      t.work_directory = deployment_configuration.work_directory
-
-      t.state_file = state_file
-      t.vars = vars
+      t.state_file = deployment_configuration.state_file
+      t.vars = deployment_configuration.vars
     end
   end
 end
@@ -224,7 +230,7 @@ namespace :version do
     puts "Bumped version to #{next_tag}."
   end
 
-  desc 'Release gem'
+  desc 'Release module'
   task :release do
     next_tag = latest_tag.release!
     repo.add_tag(next_tag.to_s)

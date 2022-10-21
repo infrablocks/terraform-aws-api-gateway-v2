@@ -1,10 +1,8 @@
 ---
-source_directory: "spec/infra/root"
-state_file: "%{hiera('project_directory')}/state/root.tfstate"
+configuration_directory: "%{cwd}/spec/unit/infra/root"
+state_file: "%{cwd}/state/root.tfstate"
 vars:
   region: "%{hiera('region')}"
 
   component: "%{hiera('component')}"
   deployment_identifier: "%{hiera('deployment_identifier')}"
-
-  hosted_zone_id: "%{hiera('public_zone_id')}"
