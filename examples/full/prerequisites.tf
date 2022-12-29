@@ -19,7 +19,7 @@ module "certificate" {
 
 module "base_networking" {
   source  = "infrablocks/base-networking/aws"
-  version = "4.0.0"
+  version = "5.0.0"
 
   region = var.region
   availability_zones = data.aws_availability_zones.zones.names

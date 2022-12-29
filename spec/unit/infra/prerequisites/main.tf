@@ -2,7 +2,7 @@ data "aws_availability_zones" "zones" {}
 
 module "certificate" {
   source  = "infrablocks/acm-certificate/aws"
-  version = "1.2.0-rc.1"
+  version = "1.1.0"
 
   domain_name = var.domain_name
   domain_zone_id = var.public_zone_id
@@ -19,7 +19,7 @@ module "certificate" {
 
 module "base_networking" {
   source  = "infrablocks/base-networking/aws"
-  version = "4.0.0"
+  version = "5.0.0"
 
   region = var.region
   availability_zones = data.aws_availability_zones.zones.names
