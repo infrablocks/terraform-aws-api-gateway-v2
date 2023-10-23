@@ -5,7 +5,7 @@ Terraform AWS API Gateway V2
 [![Build Pipeline](https://img.shields.io/circleci/build/github/infrablocks/terraform-aws-api-gateway-v2/main?label=build-pipeline)](https://app.circleci.com/pipelines/github/infrablocks/terraform-aws-api-gateway-v2?filter=all)
 [![Maintainer](https://img.shields.io/badge/maintainer-go--atomic.io-red)](https://go-atomic.io)
 
-A Terraform module fand associated submodules for building an API Gateway
+A Terraform module and associated submodules for building an API Gateway
 using the V2 API.
 
 The `infrablocks/api-gateway-v2/aws` root module:
