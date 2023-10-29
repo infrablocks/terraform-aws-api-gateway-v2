@@ -32,7 +32,7 @@ describe 'VPC link' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_apigatewayv2_vpc_link')
               .with_attribute_value(
-                :subnet_ids, contain_exactly(*vpc_link_subnet_ids)
+                :subnet_ids, match_array(vpc_link_subnet_ids)
               ))
     end
 
