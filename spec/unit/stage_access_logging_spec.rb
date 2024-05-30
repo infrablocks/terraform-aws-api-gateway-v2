@@ -73,12 +73,9 @@ describe 'stage access logging' do
                 '{' \
                 '"accountId": "$context.accountId", ' \
                 '"apiId": "$context.apiId", ' \
-                '"authorizer.claims.property": ' \
-                '"$context.authorizer.claims.property", ' \
                 '"authorizer.error": "$context.authorizer.error", ' \
                 '"authorizer.principalId": ' \
                 '"$context.authorizer.principalId", ' \
-                '"authorizer.property": "$context.authorizer.property", ' \
                 '"awsEndpointRequestId": ' \
                 '"$context.awsEndpointRequestId", ' \
                 '"awsEndpointRequestId2": ' \
