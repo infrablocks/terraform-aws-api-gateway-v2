@@ -70,16 +70,16 @@ describe 'stage access logging' do
               .with_attribute_value(
                 [:access_log_settings, 0, :format],
                 '{"apiId": "$context.apiId", ' \
-                  '"requestId": "$context.requestId", ' \
-                  '"extendedRequestId": "$context.extendedRequestId", ' \
-                  '"httpMethod": "$context.httpMethod", ' \
-                  '"path": "$context.path", ' \
-                  '"protocol": "$context.protocol", ' \
-                  '"requestTime": "$context.requestTime", ' \
-                  '"requestTimeEpoch": "$context.requestTimeEpoch", ' \
-                  '"status": $context.status, ' \
-                  '"responseLatency": $context.responseLatency, ' \
-                  '"responseLength": $context.responseLength}'
+                '"requestId": "$context.requestId", ' \
+                '"extendedRequestId": "$context.extendedRequestId", ' \
+                '"httpMethod": "$context.httpMethod", ' \
+                '"path": "$context.path", ' \
+                '"protocol": "$context.protocol", ' \
+                '"requestTime": "$context.requestTime", ' \
+                '"requestTimeEpoch": "$context.requestTimeEpoch", ' \
+                '"status": $context.status, ' \
+                '"responseLatency": $context.responseLatency, ' \
+                '"responseLength": $context.responseLength}'
               ))
     end
   end
