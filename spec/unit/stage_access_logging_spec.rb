@@ -69,17 +69,17 @@ describe 'stage access logging' do
         .to(include_resource_creation(type: 'aws_apigatewayv2_stage')
               .with_attribute_value(
                 [:access_log_settings, 0, :format],
-                "{\"apiId\": \"$context.apiId\", " \
-                  "\"requestId\": ""\"$context.requestId\", " \
-                  "\"extendedRequestId\": \"$context.extendedRequestId\", " \
-                  "\"httpMethod\": \"$context.httpMethod\", " \
-                  "\"path\": \"$context.path\", " \
-                  "\"protocol\": \"$context.protocol\", " \
-                  "\"requestTime\": \"$context.requestTime\", " \
-                  "\"requestTimeEpoch\": \"$context.requestTimeEpoch\", " \
-                  "\"status\": $context.status, " \
-                  "\"responseLatency\": $context.responseLatency, " \
-                  "\"responseLength\": $context.responseLength}"
+                '{"apiId": "$context.apiId", ' \
+                  '"requestId": "$context.requestId", ' \
+                  '"extendedRequestId": "$context.extendedRequestId", ' \
+                  '"httpMethod": "$context.httpMethod", ' \
+                  '"path": "$context.path", ' \
+                  '"protocol": "$context.protocol", ' \
+                  '"requestTime": "$context.requestTime", ' \
+                  '"requestTimeEpoch": "$context.requestTimeEpoch", ' \
+                  '"status": $context.status, ' \
+                  '"responseLatency": $context.responseLatency, ' \
+                  '"responseLength": $context.responseLength}'
               ))
     end
   end
