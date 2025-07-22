@@ -34,3 +34,6 @@ state/
 *.tfplan
 *.tfstate
 *.tfstate.backup
+
+devbox.lock
+devbox.json
