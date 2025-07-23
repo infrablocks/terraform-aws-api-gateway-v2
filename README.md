@@ -80,6 +80,54 @@ module "api_gateway" {
 }
 ```
 
+### CORS Configuration
+
+To enable CORS (Cross-Origin Resource Sharing) on your API Gateway, add the CORS configuration parameters:
+
+```terraform
+module "api_gateway" {
+  source  = "infrablocks/api-gateway-v2/aws"
+  version = "1.0.0"
+
+  component             = "api-gw"
+  deployment_identifier = "production"
+
+  protocol_type = "HTTP"
+
+  default_stage_domain_name                 = "example.com"
+  default_stage_domain_name_certificate_arn = "arn:aws:acm:eu-west-2:123456789101:certificate/31bd2209-f35b-4668-b48b-324f44fedc7e"
+
+  hosted_zone_id = "Z0901234DIVFOTMNA324"
+
+  # CORS Configuration
+  cors_enabled           = true
+  cors_allow_origins     = ["https://example.com", "https://app.example.com"]
+  cors_allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+  cors_allow_headers     = ["Content-Type", "Authorization", "X-Requested-With"]
+  cors_max_age           = 7200
+  cors_allow_credentials = true
+  cors_expose_headers    = ["Content-Type", "Authorization"]
+
+  tags = {
+    Role: "webhooks"
+  }
+
+  providers = {
+    aws = aws
+    aws.dns = aws
+  }
+}
+```
+
+**Note:** When `cors_enabled` is set to `true`, the module will automatically configure the API Gateway with the specified CORS settings. The default values are suitable for development but should be customized for production environments:
+
+- `cors_allow_origins`: Defaults to `["*"]` but should be restricted to specific domains in production
+- `cors_allow_methods`: Defaults to `["GET", "POST", "OPTIONS"]` but can include additional methods as needed
+- `cors_allow_headers`: Defaults to `["*"]` but should be limited to required headers in production
+- `cors_max_age`: Controls how long browsers cache preflight responses (default: 3600 seconds)
+- `cors_allow_credentials`: Set to `true` when your frontend needs to send cookies or authorization headers
+- `cors_expose_headers`: Lists headers that browsers are allowed to access from the response
+
 Then to use the `infrablocks/api-gateway-v2/aws//modules/stage` submodule:
 
 ```terraform
@@ -162,6 +210,14 @@ for more details.
 | `include_default_stage_dns_record`          | Whether or not to create a DNS record in Route 53 for the domain name of the default stage of the API gateway. Only relevant when both the default stage and default stage domain name are included. |  `true`  |                                      No                                       |
 | `enable_execute_api_endpoint`               | Whether or not to enable the execute API endpoint on the API gateway.                                                                                                                                |  `true`  |                                      No                                       |
 | `enable_default_stage_auto_deploy`          | Whether or not to enable auto-deploy for the created default stage. Only relevant when the default stage is included.                                                                                |  `true`  |                                      No                                       |
+| `cors_enabled`                              | Whether to enable CORS on the API Gateway.                                                                                                                                                           | `false`  |                                      No                                       |
+| `cors_allow_origins`                        | List of allowed origins for CORS.                                                                                                                                                                    | `["*"]`  |                                      No                                       |
+| `cors_allow_methods`                        | List of allowed HTTP methods for CORS.                                                                                                                                                               | `["GET", "POST", "OPTIONS"]` |                          No                                       |
+| `cors_allow_headers`                        | List of allowed headers for CORS.                                                                                                                                                                    | `["*"]`  |                                      No                                       |
+| `cors_max_age`                              | CORS max age in seconds.                                                                                                                                                                              | `3600`   |                                      No                                       |
+| `cors_allow_credentials`                    | Whether to allow credentials for CORS.                                                                                                                                                               | `false`  |                                      No                                       |
+| `cors_expose_headers`                       | List of exposed headers for CORS.                                                                                                                                                                    |  `[]`    |                                      No                                       |
+
 
 #### Stage Sub-module
 
@@ -291,9 +347,9 @@ brew install ruby-build
 echo 'eval "$(rbenv init - bash)"' >> ~/.bash_profile
 echo 'eval "$(rbenv init - zsh)"' >> ~/.zshrc
 eval "$(rbenv init -)"
-rbenv install 3.1.1
+rbenv install 3.3.8
 rbenv rehash
-rbenv local 3.1.1
+rbenv local 3.3.8
 gem install bundler
 
 # git, git-crypt, gnupg

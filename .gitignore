@@ -37,3 +37,4 @@ state/
 
 devbox.lock
 devbox.json
+.devbox
