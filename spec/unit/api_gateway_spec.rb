@@ -88,6 +88,12 @@ describe 'API gateway' do
               ))
     end
 
+    it 'does not include CORS configuration' do
+      expect(@plan)
+        .not_to(include_resource_creation(type: 'aws_apigatewayv2_api')
+                  .with_attribute_value(:cors_configuration, anything))
+    end
+
     it 'outputs the API gateway ID' do
       expect(@plan)
         .to(include_output_creation(name: 'api_gateway_id'))

@@ -9,3 +9,11 @@ vars:
 
   domain_name: "%{hiera('domain_name')}"
   public_zone_id: "%{hiera('public_zone_id')}"
+
+  cors_enabled: "true"
+  cors_allow_origins: ["https://test.example.com"]
+  cors_allow_methods: ["GET", "POST", "OPTIONS"]
+  cors_allow_headers: ["Content-Type", "Authorization", "X-Requested-With"]
+  cors_max_age: "7200"
+  cors_allow_credentials: "true"
+  cors_expose_headers: ["Content-Type", "Authorization", "X-Requested-With"]

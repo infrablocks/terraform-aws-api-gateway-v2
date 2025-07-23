@@ -66,3 +66,45 @@ variable "enable_default_stage_auto_deploy" {
   type        = bool
   default     = true
 }
+
+variable "cors_enabled" {
+  description = "Enable CORS on the API Gateway"
+  type        = bool
+  default     = false
+}
+
+variable "cors_allow_origins" {
+  description = "List of allowed origins for CORS"
+  type        = list(string)
+  default     = ["*"]
+}
+
+variable "cors_allow_methods" {
+  description = "List of allowed HTTP methods for CORS"
+  type        = list(string)
+  default     = ["GET", "POST", "OPTIONS"]
+}
+
+variable "cors_allow_headers" {
+  description = "List of allowed headers for CORS"
+  type        = list(string)
+  default     = ["*"]
+}
+
+variable "cors_max_age" {
+  description = "CORS max age in seconds"
+  type        = number
+  default     = 3600
+}
+
+variable "cors_allow_credentials" {
+  description = "Whether to allow credentials for CORS"
+  type        = bool
+  default     = false
+}
+
+variable "cors_expose_headers" {
+  description = "List of exposed headers for CORS"
+  type        = list(string)
+  default     = []
+}

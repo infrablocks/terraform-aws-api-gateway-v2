@@ -163,6 +163,42 @@ describe 'full example' do
       expect(api_gateway.description)
         .to(match(/.*#{deployment_identifier}.*/))
     end
+
+    it 'includes the cors configuration' do
+      expect(api_gateway.cors_configuration.allow_credentials).to(be(true))
+    end
+
+    it 'allows the specified headers for CORS' do
+      expect(api_gateway.cors_configuration.allow_headers)
+        .to(include(
+              'x-requested-with', 'authorization', 'content-type'
+            ))
+    end
+
+    it 'exposes the specified headers for CORS' do
+      expect(api_gateway.cors_configuration.expose_headers)
+        .to(include(
+              'content-type', 'authorization', 'x-requested-with'
+            ))
+    end
+
+    it 'allows the specified methods for CORS' do
+      expect(api_gateway.cors_configuration.allow_methods)
+        .to(include(
+              'POST', 'OPTIONS', 'GET'
+            ))
+    end
+
+    it 'allows the specified origins for CORS' do
+      expect(api_gateway.cors_configuration.allow_origins)
+        .to(include(
+              'https://test.example.com'
+            ))
+    end
+
+    it 'allows the specified max age for CORS' do
+      expect(api_gateway.cors_configuration.max_age).to(be(7200))
+    end
   end
 
   describe 'default stage' do

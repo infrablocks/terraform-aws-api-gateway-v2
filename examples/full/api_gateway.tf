@@ -23,4 +23,12 @@ module "api_gateway" {
   depends_on = [
     module.certificate
   ]
+
+  cors_enabled           = var.cors_enabled
+  cors_allow_origins     = var.cors_allow_origins
+  cors_allow_methods     = var.cors_allow_methods
+  cors_allow_headers     = var.cors_allow_headers
+  cors_max_age           = var.cors_max_age
+  cors_allow_credentials = var.cors_allow_credentials
+  cors_expose_headers    = var.cors_expose_headers
 }
