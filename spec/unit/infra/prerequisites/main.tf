@@ -1,4 +1,6 @@
-data "aws_availability_zones" "zones" {}
+data "aws_availability_zones" "zones" {
+  exclude_zone_ids = ["euw2-az4"]
+}
 
 module "certificate" {
   source  = "infrablocks/acm-certificate/aws"
